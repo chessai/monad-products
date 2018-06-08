@@ -22,7 +22,7 @@ source-repository head
 library
   build-depends:
     base          >= 4 && < 5,
-    semigroupoids >= 4 && < 6
+    semigroupoids >= 6 && < 7
 
   exposed-modules:
     Control.Monad.Product

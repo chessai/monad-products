@@ -16,7 +16,7 @@ module Control.Monad.Product
   ) where
 
 import Control.Applicative
-import Data.Functor.Bind
+import Data.Functor.Semimonad
 import Data.Functor.Alt
 import Control.Monad
 
@@ -27,7 +27,7 @@ instance (Functor g, Functor h) => Functor (Product g h) where
   fmap f (Product (g, h)) = Product (fmap f g, fmap f h)
   b <$ Product (g, h) = Product (b <$ g, b <$ h)
 
-instance (Apply g, Apply h) => Apply (Product g h) where
+instance (Semiapplicative g, Semiapplicative h) => Semiapplicative (Product g h) where
   Product (gf, hf) <.> Product (ga, ha) = Product (gf <.> ga, hf <.> ha)
   Product (gf, hf) <.  Product (ga, ha) = Product (gf <.  ga, hf <.  ha)
   Product (gf, hf)  .> Product (ga, ha) = Product (gf  .> ga, hf  .> ha)
@@ -38,7 +38,7 @@ instance (Applicative g, Applicative h) => Applicative (Product g h) where
   Product (gf, hf) <*  Product (ga, ha) = Product (gf <*  ga, hf <*  ha)
   Product (gf, hf)  *> Product (ga, ha) = Product (gf  *> ga, hf  *> ha)
 
-instance (Bind g, Bind h) => Bind (Product g h) where
+instance (Semimonad g, Semimonad h) => Semimonad (Product g h) where
   Product (g, h) >>- k = Product (g >>- fst . runProduct . k, h >>- snd . runProduct . k)
 
 instance (Monad g, Monad h) => Monad (Product g h) where
